@@ -123,18 +123,24 @@ public class MainViewModel : ViewModelBase
         item.RefreshPathMissing();
         if (item.PathMissing) return false;
 
-        // 文件夹条目:直接在资源管理器中打开
-        if (item.IsFolder)
+        // 非脚本条目(文件夹/程序/文档/网址):交给系统启动,不等待退出
+        if (item.LaunchKind != LaunchKind.Script)
         {
             try
             {
-                ScriptRunner.OpenFolder(item.ScriptPath);
+                ScriptRunner.Launch(item.ScriptPath,
+                    item.LaunchKind == LaunchKind.Folder ? "" : item.Arguments);
                 IsStatusError = false;
-                StatusText = $"{item.Name} 已打开文件夹";
+                StatusText = item.LaunchKind switch
+                {
+                    LaunchKind.Folder => $"{item.Name} 已打开文件夹",
+                    LaunchKind.Url => $"{item.Name} 已在浏览器打开",
+                    _ => $"{item.Name} 已启动",
+                };
             }
             catch (Exception ex)
             {
-                StatusText = $"{item.Name} 打开失败: {ex.Message}";
+                StatusText = $"{item.Name} 启动失败: {ex.Message}";
                 IsStatusError = true;
             }
             return true;

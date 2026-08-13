@@ -61,4 +61,12 @@ public class ItemViewModelTests
         Assert.True(vm.PathMissing);
         Assert.False(vm.IsFolder);
     }
+
+    [Fact]
+    public void Url_NotMarkedPathMissing()
+    {
+        var vm = Vm(path: "https://example.com");
+        Assert.False(vm.PathMissing); // 网址条目不做存在性检查
+        Assert.False(vm.IsFolder);
+    }
 }

@@ -21,7 +21,7 @@ public partial class EditItemDialog : Window
     {
         var dialog = new OpenFileDialog
         {
-            Filter = "PowerShell 脚本 (*.ps1)|*.ps1|所有文件 (*.*)|*.*",
+            Filter = "所有文件 (*.*)|*.*|PowerShell 脚本 (*.ps1)|*.ps1|程序 (*.exe)|*.exe",
             CheckFileExists = true,
         };
         if (dialog.ShowDialog(this) == true)

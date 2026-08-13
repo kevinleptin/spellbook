@@ -134,12 +134,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 目标路径:ps1 脚本或文件夹(文件夹条目点击时在资源管理器中打开) -->
+        <!-- 目标路径:ps1 脚本 / 文件夹 / 程序或文档 / http(s) 网址,点击时按类型分发启动 -->
         <TextBlock Grid.Row="0" Grid.Column="0" Text="目标路径" Style="{StaticResource LabelStyle}"/>
         <DockPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,10">
             <Button DockPanel.Dock="Right" Content="选文件夹" Click="BrowseFolder_Click"
                     Style="{StaticResource RedButtonStyle}" Margin="6,0,0,0"/>
-            <Button DockPanel.Dock="Right" Content="选脚本" Click="Browse_Click"
+            <Button DockPanel.Dock="Right" Content="选文件" Click="Browse_Click"
                     Style="{StaticResource RedButtonStyle}" Margin="8,0,0,0"/>
             <TextBox Text="{Binding ScriptPath, UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource DarkTextBoxStyle}"/>

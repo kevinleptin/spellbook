@@ -53,11 +53,16 @@ public class ItemViewModel : ViewModelBase
         set => SetProperty(ref _pathMissing, value);
     }
 
-    /// <summary>条目指向文件夹时,点击 = 打开资源管理器。</summary>
-    public bool IsFolder => Directory.Exists(ScriptPath);
+    /// <summary>启动方式(网址/文件夹/脚本/程序),点击时据此分发。</summary>
+    public LaunchKind LaunchKind => ScriptRunner.GetLaunchKind(ScriptPath);
 
+    /// <summary>条目指向文件夹时,点击 = 打开资源管理器。</summary>
+    public bool IsFolder => LaunchKind == LaunchKind.Folder;
+
+    /// <summary>网址条目不做存在性检查。</summary>
     public void RefreshPathMissing() =>
-        PathMissing = !File.Exists(ScriptPath) && !Directory.Exists(ScriptPath);
+        PathMissing = LaunchKind != LaunchKind.Url
+                      && !File.Exists(ScriptPath) && !Directory.Exists(ScriptPath);
 
     /// <summary>编辑回填后刷新全部展示属性。</summary>
     public void RaiseAllChanged()
