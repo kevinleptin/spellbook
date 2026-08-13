@@ -72,7 +72,18 @@ public class EditItemViewModel : ViewModelBase
         }
     }
 
-    /// <summary>生成新条目模型(编辑场景由调用方把字段拷回原模型)。</summary>
+    /// <summary>编辑确认:把全部可编辑字段拷回原模型(SortOrder 由 VM 层管理,不动)。</summary>
+    public void ApplyTo(SpellItem target)
+    {
+        target.Name = Name.Trim();
+        target.ScriptPath = ScriptPath.Trim();
+        target.Arguments = Arguments.Trim();
+        target.Notes = Notes;
+        target.GroupName = GroupName.Trim();
+        target.IconKey = IconKey;
+    }
+
+    /// <summary>生成新条目模型(编辑场景改用 ApplyTo)。</summary>
     public SpellItem ToModel(int sortOrder) => new()
     {
         Name = Name.Trim(),

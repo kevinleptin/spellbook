@@ -6,7 +6,7 @@ namespace Spellbook.Tests;
 public class IconLoaderTests
 {
     [Fact]
-    public void Decode_AllHundredIcons_Succeeds()
+    public void Decode_AllLibraryIcons_Succeeds()
     {
         var dir = IconAssetsTests.IconsDir();
         foreach (var icon in IconLibrary.All)

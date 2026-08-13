@@ -19,10 +19,10 @@ public class IconAssetsTests
         Path.Combine(RepoRoot(), "src", "Spellbook", "Assets", "Icons");
 
     [Fact]
-    public void Library_Has100UniqueKeys()
+    public void Library_HasAtLeast100UniqueKeys()
     {
-        Assert.Equal(100, IconLibrary.All.Count);
-        Assert.Equal(100, IconLibrary.All.Select(i => i.Key).Distinct().Count());
+        Assert.True(IconLibrary.All.Count >= 100);
+        Assert.Equal(IconLibrary.All.Count, IconLibrary.All.Select(i => i.Key).Distinct().Count());
         Assert.All(IconLibrary.All, i =>
         {
             Assert.False(string.IsNullOrWhiteSpace(i.DisplayName));

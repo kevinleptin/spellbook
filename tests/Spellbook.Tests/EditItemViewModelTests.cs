@@ -102,6 +102,32 @@ public class EditItemViewModelTests
     }
 
     [Fact]
+    public void ApplyTo_CopiesAllEditableFields_IncludingIconKey()
+    {
+        var original = new SpellItem
+        {
+            Name = "旧名", ScriptPath = @"C:\old.ps1", Arguments = "-old",
+            Notes = "旧备注", GroupName = "旧组", SortOrder = 5, IconKey = "book",
+        };
+        var vm = new EditItemViewModel(Array.Empty<string>(), original)
+        {
+            Name = "新名", Arguments = "-new", Notes = "新备注",
+            GroupName = "新组", IconKey = "fireball",
+        };
+        vm.SetScriptPath(@"C:\new.ps1");
+
+        vm.ApplyTo(original);
+
+        Assert.Equal("新名", original.Name);
+        Assert.Equal(@"C:\new.ps1", original.ScriptPath);
+        Assert.Equal("-new", original.Arguments);
+        Assert.Equal("新备注", original.Notes);
+        Assert.Equal("新组", original.GroupName);
+        Assert.Equal("fireball", original.IconKey); // 编辑改图标必须生效
+        Assert.Equal(5, original.SortOrder);        // 排序号不被编辑覆盖
+    }
+
+    [Fact]
     public void ToModel_CopiesFieldsAndSortOrder()
     {
         var vm = new EditItemViewModel(Array.Empty<string>());

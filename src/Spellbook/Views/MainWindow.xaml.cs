@@ -74,12 +74,7 @@ public partial class MainWindow : Window
         if (dialog.ShowDialog() == true)
         {
             // 把对话框字段拷回原模型,再由 VM 处理换组/保存/刷新
-            var edited = dialog.ViewModel.ToModel(item.Model.SortOrder);
-            item.Model.Name = edited.Name;
-            item.Model.ScriptPath = edited.ScriptPath;
-            item.Model.Arguments = edited.Arguments;
-            item.Model.Notes = edited.Notes;
-            item.Model.GroupName = edited.GroupName;
+            dialog.ViewModel.ApplyTo(item.Model);
             Vm.ApplyEdit(item);
         }
     }
