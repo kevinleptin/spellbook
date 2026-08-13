@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -39,8 +40,12 @@ namespace Spellbook.UI
 
             BodyFont = TMP_FontAsset.CreateFontAsset(noto);
             TitleFont = cinzel != null ? TMP_FontAsset.CreateFontAsset(cinzel) : BodyFont;
-            // Cinzel 无中文字形,中文回退到 Noto
-            if (TitleFont != BodyFont) TitleFont.fallbackFontAssetTable.Add(BodyFont);
+            // Cinzel 无中文字形,中文回退到 Noto(动态字体的回退表初始可能为 null)
+            if (TitleFont != BodyFont)
+            {
+                TitleFont.fallbackFontAssetTable ??= new List<TMP_FontAsset>();
+                TitleFont.fallbackFontAssetTable.Add(BodyFont);
+            }
         }
 
         public static Sprite Sprite(string name) =>
