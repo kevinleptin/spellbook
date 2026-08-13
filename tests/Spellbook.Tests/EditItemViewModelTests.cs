@@ -1,0 +1,91 @@
+using Spellbook.Models;
+using Spellbook.ViewModels;
+
+namespace Spellbook.Tests;
+
+public class EditItemViewModelTests
+{
+    [Fact]
+    public void SetScriptPath_FillsNameFromFileName()
+    {
+        var vm = new EditItemViewModel(new[] { "运维" });
+
+        vm.SetScriptPath(@"C:\scripts\cleanup.ps1");
+
+        Assert.Equal("cleanup", vm.Name);
+        Assert.Equal(@"C:\scripts\cleanup.ps1", vm.ScriptPath);
+    }
+
+    [Fact]
+    public void SetScriptPath_KeepsUserEditedName()
+    {
+        var vm = new EditItemViewModel(Array.Empty<string>());
+        vm.SetScriptPath(@"C:\scripts\cleanup.ps1");
+
+        vm.Name = "我的清理"; // 用户手改
+        vm.SetScriptPath(@"C:\scripts\other.ps1");
+
+        Assert.Equal("我的清理", vm.Name);
+    }
+
+    [Fact]
+    public void SetScriptPath_RefillsWhenNameStillAuto()
+    {
+        var vm = new EditItemViewModel(Array.Empty<string>());
+
+        vm.SetScriptPath(@"C:\scripts\cleanup.ps1");
+        vm.SetScriptPath(@"C:\scripts\other.ps1"); // 未手改名称,跟随新文件
+
+        Assert.Equal("other", vm.Name);
+    }
+
+    [Fact]
+    public void CanConfirm_RequiresNameAndPath()
+    {
+        var vm = new EditItemViewModel(Array.Empty<string>());
+        Assert.False(vm.CanConfirm);
+
+        vm.SetScriptPath(@"C:\scripts\a.ps1");
+        Assert.True(vm.CanConfirm);
+
+        vm.Name = "";
+        Assert.False(vm.CanConfirm);
+    }
+
+    [Fact]
+    public void Editing_PrefillsAllFields()
+    {
+        var item = new SpellItem
+        {
+            Name = "部署",
+            ScriptPath = @"C:\s\deploy.ps1",
+            Arguments = "-env prod",
+            Notes = "小心",
+            GroupName = "运维",
+        };
+
+        var vm = new EditItemViewModel(new[] { "运维" }, item);
+
+        Assert.Equal("部署", vm.Name);
+        Assert.Equal(@"C:\s\deploy.ps1", vm.ScriptPath);
+        Assert.Equal("-env prod", vm.Arguments);
+        Assert.Equal("小心", vm.Notes);
+        Assert.Equal("运维", vm.GroupName);
+    }
+
+    [Fact]
+    public void ToModel_CopiesFieldsAndSortOrder()
+    {
+        var vm = new EditItemViewModel(Array.Empty<string>());
+        vm.SetScriptPath(@"C:\s\a.ps1");
+        vm.Arguments = "-x";
+        vm.Notes = "n";
+        vm.GroupName = " 运维 "; // 分组名去首尾空白
+
+        var model = vm.ToModel(7);
+
+        Assert.Equal("a", model.Name);
+        Assert.Equal("运维", model.GroupName);
+        Assert.Equal(7, model.SortOrder);
+    }
+}
