@@ -114,6 +114,32 @@ public class MainViewModel : ViewModelBase
         SaveAndRebuild();
     }
 
+    /// <summary>
+    /// 运行脚本:路径不存在返回 false(并标记磁贴警告);
+    /// 否则启动新控制台运行,退出码异步回填状态栏。
+    /// </summary>
+    public async Task<bool> RunItemAsync(ItemViewModel item)
+    {
+        item.RefreshPathMissing();
+        if (item.PathMissing) return false;
+
+        try
+        {
+            IsStatusError = false;
+            StatusText = $"{item.Name} 运行中…";
+            var exitCode = await ScriptRunner.RunAsync(item.ScriptPath, item.Arguments);
+            StatusText = $"{item.Name} 退出码 {exitCode}";
+            IsStatusError = exitCode != 0;
+        }
+        catch (Exception ex)
+        {
+            // 启动失败(如系统缺 powershell.exe)也不崩溃,红色提示
+            StatusText = $"{item.Name} 启动失败: {ex.Message}";
+            IsStatusError = true;
+        }
+        return true;
+    }
+
     /// <summary>下一个组尾序号(可排除某条,用于移动自身)。</summary>
     private int NextSortOrder(string groupKey, SpellItem? exclude = null)
     {
