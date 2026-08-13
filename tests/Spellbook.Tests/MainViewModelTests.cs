@@ -178,6 +178,69 @@ public class MainViewModelTests : IDisposable
     }
 
     [Fact]
+    public void ReorderGroupBefore_MovesBlock_AndPersists()
+    {
+        var vm = NewVm();
+        vm.AddItem(Item("a", "甲"));
+        vm.AddItem(Item("b", "乙"));
+        vm.AddItem(Item("c", "丙"));
+
+        var bing = vm.Groups.First(g => g.Key == "丙");
+        var jia = vm.Groups.First(g => g.Key == "甲");
+        vm.ReorderGroupBefore(bing, jia);
+
+        Assert.Equal(new[] { "丙", "甲", "乙" }, vm.Groups.Select(g => g.Key));
+        Assert.Equal(new[] { "丙", "甲", "乙" }, NewVm().Groups.Select(g => g.Key));
+    }
+
+    [Fact]
+    public void ReorderGroupBefore_UngroupedTarget_IsNoOp()
+    {
+        var vm = NewVm();
+        vm.AddItem(Item("free"));
+        vm.AddItem(Item("a", "甲"));
+        vm.AddItem(Item("b", "乙"));
+
+        var yi = vm.Groups.First(g => g.Key == "乙");
+        vm.ReorderGroupBefore(yi, vm.Groups.First(g => g.Key == ""));
+
+        Assert.Equal(new[] { "", "甲", "乙" }, vm.Groups.Select(g => g.Key));
+    }
+
+    [Fact]
+    public void MoveGroup_UpAndDown_SwapsNeighbors_UngroupedPinned()
+    {
+        var vm = NewVm();
+        vm.AddItem(Item("free"));
+        vm.AddItem(Item("a", "甲"));
+        vm.AddItem(Item("b", "乙"));
+        vm.AddItem(Item("c", "丙"));
+
+        vm.MoveGroup(vm.Groups.First(g => g.Key == "丙"), -1);
+        Assert.Equal(new[] { "", "甲", "丙", "乙" }, vm.Groups.Select(g => g.Key));
+
+        vm.MoveGroup(vm.Groups.First(g => g.Key == "甲"), -1); // 已是命名组第一,不能越过未分组
+        Assert.Equal(new[] { "", "甲", "丙", "乙" }, vm.Groups.Select(g => g.Key));
+
+        vm.MoveGroup(vm.Groups.First(g => g.Key == "甲"), 1);
+        Assert.Equal(new[] { "", "丙", "甲", "乙" }, vm.Groups.Select(g => g.Key));
+        // 持久化
+        Assert.Equal(new[] { "", "丙", "甲", "乙" }, NewVm().Groups.Select(g => g.Key));
+    }
+
+    [Fact]
+    public void CanMoveGroup_Boundaries()
+    {
+        var vm = NewVm();
+        vm.AddItem(Item("a", "甲"));
+        vm.AddItem(Item("b", "乙"));
+
+        Assert.False(vm.CanMoveGroup(vm.Groups.First(g => g.Key == "甲"), -1));
+        Assert.True(vm.CanMoveGroup(vm.Groups.First(g => g.Key == "甲"), 1));
+        Assert.False(vm.CanMoveGroup(vm.Groups.First(g => g.Key == "乙"), 1));
+    }
+
+    [Fact]
     public void ApplyEdit_GroupChanged_MovesToNewGroupEnd()
     {
         var vm = NewVm();

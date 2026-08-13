@@ -126,6 +126,76 @@ public partial class MainWindow : Window
         }
     }
 
+    // ---------- 分组排序(拖拽标题 + 右键上移/下移) ----------
+
+    private Point _groupDragStart;
+    private GroupViewModel? _groupDragCandidate;
+
+    private static GroupViewModel? GroupFromSender(object sender) =>
+        (sender as FrameworkElement)?.DataContext as GroupViewModel;
+
+    private void GroupHeader_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        _groupDragStart = e.GetPosition(this);
+        var group = GroupFromSender(sender);
+        // “未分组”固定置顶,不可拖动
+        _groupDragCandidate = group is { Key.Length: > 0 } ? group : null;
+    }
+
+    private void GroupHeader_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (_groupDragCandidate is null || e.LeftButton != MouseButtonState.Pressed) return;
+
+        var offset = e.GetPosition(this) - _groupDragStart;
+        if (Math.Abs(offset.X) < SystemParameters.MinimumHorizontalDragDistance &&
+            Math.Abs(offset.Y) < SystemParameters.MinimumVerticalDragDistance) return;
+
+        var group = _groupDragCandidate;
+        _groupDragCandidate = null;
+        DragDrop.DoDragDrop((DependencyObject)sender,
+            new DataObject(typeof(GroupViewModel), group), DragDropEffects.Move);
+    }
+
+    private static GroupViewModel? DraggedGroup(DragEventArgs e) =>
+        e.Data.GetData(typeof(GroupViewModel)) as GroupViewModel;
+
+    private void GroupHeader_DragOver(object sender, DragEventArgs e)
+    {
+        var source = DraggedGroup(e);
+        var target = GroupFromSender(sender);
+        e.Effects = source is not null && target is not null &&
+                    source != target && target.Key.Length > 0
+            ? DragDropEffects.Move
+            : DragDropEffects.None;
+        e.Handled = true;
+    }
+
+    private void GroupHeader_Drop(object sender, DragEventArgs e)
+    {
+        var source = DraggedGroup(e);
+        var target = GroupFromSender(sender);
+        if (source is not null && target is not null) Vm.ReorderGroupBefore(source, target);
+        e.Handled = true;
+    }
+
+    /// <summary>打开分组菜单时按边界启用/禁用上移下移。</summary>
+    private void GroupMenu_Opened(object sender, RoutedEventArgs e)
+    {
+        if (sender is not ContextMenu menu || menu.DataContext is not GroupViewModel group) return;
+        ((MenuItem)menu.Items[0]).IsEnabled = Vm.CanMoveGroup(group, -1);
+        ((MenuItem)menu.Items[1]).IsEnabled = Vm.CanMoveGroup(group, 1);
+    }
+
+    private void GroupMoveUp_Click(object sender, RoutedEventArgs e)
+    {
+        if (GroupFromSender(sender) is { } group) Vm.MoveGroup(group, -1);
+    }
+
+    private void GroupMoveDown_Click(object sender, RoutedEventArgs e)
+    {
+        if (GroupFromSender(sender) is { } group) Vm.MoveGroup(group, 1);
+    }
+
     // ---------- 同组拖拽排序 ----------
 
     private void Tile_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)

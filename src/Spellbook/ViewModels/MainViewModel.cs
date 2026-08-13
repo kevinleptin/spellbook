@@ -140,6 +140,52 @@ public class MainViewModel : ViewModelBase
         return true;
     }
 
+    /// <summary>分组排序:把 source 组整块插到 target 组之前("未分组"不可拖动也不可为目标)。</summary>
+    public void ReorderGroupBefore(GroupViewModel source, GroupViewModel target)
+    {
+        if (source == target || source.Key.Length == 0 || target.Key.Length == 0) return;
+
+        var keys = NamedGroupKeys();
+        if (!keys.Remove(source.Key)) return;
+        var index = keys.IndexOf(target.Key);
+        if (index < 0) return;
+        keys.Insert(index, source.Key);
+        ApplyGroupOrder(keys);
+    }
+
+    /// <summary>分组能否上移/下移(delta = -1/1);"未分组"恒定置顶不可移动。</summary>
+    public bool CanMoveGroup(GroupViewModel group, int delta)
+    {
+        if (group.Key.Length == 0) return false;
+        var keys = NamedGroupKeys();
+        var index = keys.IndexOf(group.Key);
+        var to = index + delta;
+        return index >= 0 && to >= 0 && to < keys.Count;
+    }
+
+    /// <summary>分组上移/下移一位,越界为空操作。</summary>
+    public void MoveGroup(GroupViewModel group, int delta)
+    {
+        if (!CanMoveGroup(group, delta)) return;
+        var keys = NamedGroupKeys();
+        var index = keys.IndexOf(group.Key);
+        keys.RemoveAt(index);
+        keys.Insert(index + delta, group.Key);
+        ApplyGroupOrder(keys);
+    }
+
+    private List<string> NamedGroupKeys() =>
+        Groups.Select(g => g.Key).Where(k => k.Length > 0).ToList();
+
+    /// <summary>按新的命名分组顺序重排主列表组块并保存("未分组"块恒在最前)。</summary>
+    private void ApplyGroupOrder(List<string> namedKeys)
+    {
+        _items = _items.Where(i => i.GroupName.Length == 0)
+            .Concat(namedKeys.SelectMany(k => _items.Where(i => i.GroupName == k)))
+            .ToList();
+        SaveAndRebuild();
+    }
+
     /// <summary>下一个组尾序号(可排除某条,用于移动自身)。</summary>
     private int NextSortOrder(string groupKey, SpellItem? exclude = null)
     {

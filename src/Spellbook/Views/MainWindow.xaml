@@ -121,7 +121,19 @@
         <!-- ======== 分组数据模板(标题仿任务日志)======== -->
         <DataTemplate x:Key="GroupTemplate" DataType="{x:Type vm:GroupViewModel}">
             <StackPanel Visibility="{Binding IsVisible, Converter={StaticResource BoolToVis}}">
-                <Grid Margin="10,12,10,2">
+                <!-- 分组标题:可拖拽排序(拖到其他分组标题=插到其前),右键上移/下移;“未分组”固定置顶 -->
+                <Grid Margin="10,12,10,2" Background="Transparent"
+                      AllowDrop="True"
+                      PreviewMouseLeftButtonDown="GroupHeader_PreviewMouseLeftButtonDown"
+                      PreviewMouseMove="GroupHeader_PreviewMouseMove"
+                      DragOver="GroupHeader_DragOver"
+                      Drop="GroupHeader_Drop">
+                    <Grid.ContextMenu>
+                        <ContextMenu Opened="GroupMenu_Opened">
+                            <MenuItem Header="上移" Click="GroupMoveUp_Click"/>
+                            <MenuItem Header="下移" Click="GroupMoveDown_Click"/>
+                        </ContextMenu>
+                    </Grid.ContextMenu>
                     <Grid.Resources>
                         <!-- 4×4 旋转 45° 的菱形装饰 -->
                         <Style x:Key="Diamond" TargetType="Rectangle">
