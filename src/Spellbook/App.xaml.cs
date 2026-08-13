@@ -1,6 +1,7 @@
 using System.Windows;
 using Spellbook.Services;
 using Spellbook.ViewModels;
+using Spellbook.Views;
 
 namespace Spellbook;
 
