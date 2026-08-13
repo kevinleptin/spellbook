@@ -24,12 +24,9 @@
                                         <Border BorderBrush="{StaticResource GoldDarkBrush}" BorderThickness="1" CornerRadius="5"
                                                 Background="{StaticResource TileIconBackground}">
                                             <Grid>
-                                                <!-- 内置默认图标:一本摊开的法术书 -->
-                                                <Path Data="M4,6 C8,3 14,3 18,6 C22,3 28,3 32,6 L32,26 C28,23 22,23 18,26 C14,23 8,23 4,26 Z M18,6 L18,26"
-                                                      Stroke="{StaticResource GoldBrush}"
-                                                      StrokeThickness="1.6"
-                                                      Fill="Transparent"
-                                                      Stretch="Uniform" Margin="8"/>
+                                                <!-- 条目图标(用户从图标库任选,默认法术书) -->
+                                                <Image Source="{Binding IconImage}"
+                                                       Stretch="Uniform" Margin="4"/>
                                                 <!-- 路径失效警告标记 -->
                                                 <TextBlock Text="⚠"
                                                            FontSize="13"

@@ -111,6 +111,87 @@
             </Setter>
         </Style>
 
+        <!-- ======== 魔兽风上下文菜单(隐式样式,全局生效)======== -->
+        <Style TargetType="ContextMenu">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="HasDropShadow" Value="False"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{StaticResource TooltipBackgroundBrush}"
+                                BorderBrush="{StaticResource GoldBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="4">
+                            <ItemsPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="MenuItem">
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Bg" Background="Transparent" CornerRadius="3" Padding="12,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Grid.Column="0" ContentSource="Header"
+                                                  VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                                <!-- 子菜单箭头(金色小三角,仅含子项时显示) -->
+                                <Path x:Name="Arrow" Grid.Column="1"
+                                      Data="M0,0 L4,4 L0,8 Z"
+                                      Fill="{StaticResource GoldBrush}"
+                                      Margin="10,0,0,0" VerticalAlignment="Center"
+                                      Visibility="Collapsed"/>
+                                <!-- 子菜单弹层,同菜单底与金边 -->
+                                <Popup x:Name="PART_Popup"
+                                       Placement="Right" HorizontalOffset="4"
+                                       IsOpen="{TemplateBinding IsSubmenuOpen}"
+                                       AllowsTransparency="True" Focusable="False">
+                                    <Border Background="{StaticResource TooltipBackgroundBrush}"
+                                            BorderBrush="{StaticResource GoldBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Padding="4">
+                                        <ItemsPresenter/>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Role" Value="SubmenuHeader">
+                                <Setter TargetName="Arrow" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="{StaticResource GoldDarkBrush}"/>
+                                <Setter Property="Foreground" Value="{StaticResource GoldLightBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Separator">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Separator">
+                        <Border Height="1" Background="{StaticResource GoldDarkBrush}" Margin="8,3"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <!-- ======== 深色输入框(搜索框 / 对话框)======== -->
         <Style x:Key="DarkTextBoxStyle" TargetType="TextBox">
             <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
