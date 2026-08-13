@@ -53,7 +53,11 @@ public class ItemViewModel : ViewModelBase
         set => SetProperty(ref _pathMissing, value);
     }
 
-    public void RefreshPathMissing() => PathMissing = !File.Exists(ScriptPath);
+    /// <summary>条目指向文件夹时,点击 = 打开资源管理器。</summary>
+    public bool IsFolder => Directory.Exists(ScriptPath);
+
+    public void RefreshPathMissing() =>
+        PathMissing = !File.Exists(ScriptPath) && !Directory.Exists(ScriptPath);
 
     /// <summary>编辑回填后刷新全部展示属性。</summary>
     public void RaiseAllChanged()

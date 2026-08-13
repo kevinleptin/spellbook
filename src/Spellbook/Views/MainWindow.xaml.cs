@@ -117,7 +117,7 @@ public partial class MainWindow : Window
         if (!started)
         {
             MessageBox.Show(
-                $"脚本文件不存在:\n{item.ScriptPath}", "Spellbook",
+                $"目标路径不存在:\n{item.ScriptPath}", "Spellbook",
                 MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }

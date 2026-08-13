@@ -123,6 +123,23 @@ public class MainViewModel : ViewModelBase
         item.RefreshPathMissing();
         if (item.PathMissing) return false;
 
+        // 文件夹条目:直接在资源管理器中打开
+        if (item.IsFolder)
+        {
+            try
+            {
+                ScriptRunner.OpenFolder(item.ScriptPath);
+                IsStatusError = false;
+                StatusText = $"{item.Name} 已打开文件夹";
+            }
+            catch (Exception ex)
+            {
+                StatusText = $"{item.Name} 打开失败: {ex.Message}";
+                IsStatusError = true;
+            }
+            return true;
+        }
+
         try
         {
             IsStatusError = false;

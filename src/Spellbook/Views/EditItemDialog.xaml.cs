@@ -30,6 +30,15 @@ public partial class EditItemDialog : Window
         }
     }
 
+    private void BrowseFolder_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFolderDialog();
+        if (dialog.ShowDialog(this) == true)
+        {
+            ViewModel.SetScriptPath(dialog.FolderName);
+        }
+    }
+
     private void Ok_Click(object sender, RoutedEventArgs e) => DialogResult = true;
 
     /// <summary>标题栏关闭按钮 = 取消。</summary>

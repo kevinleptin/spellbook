@@ -12,6 +12,10 @@ public static class ScriptRunner
         return string.IsNullOrWhiteSpace(args) ? baseArgs : $"{baseArgs} {args}";
     }
 
+    /// <summary>在资源管理器中打开文件夹。</summary>
+    public static void OpenFolder(string folderPath)
+        => Process.Start(new ProcessStartInfo(folderPath) { UseShellExecute = true });
+
     /// <summary>UseShellExecute=true 使脚本在新控制台窗口运行,不阻塞 UI。</summary>
     public static async Task<int> RunAsync(string scriptPath, string args)
     {

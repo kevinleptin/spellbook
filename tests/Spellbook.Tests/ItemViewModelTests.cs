@@ -1,3 +1,4 @@
+using System.IO;
 using Spellbook.Models;
 using Spellbook.ViewModels;
 
@@ -34,5 +35,30 @@ public class ItemViewModelTests
     {
         Assert.False(Vm().HasNotes);
         Assert.True(Vm(notes: "备注").HasNotes);
+    }
+
+    [Fact]
+    public void FolderPath_NotMissing_AndIsFolder()
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "SpellbookTests_" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(dir);
+        try
+        {
+            var vm = Vm(path: dir);
+            Assert.False(vm.PathMissing); // 文件夹路径视为有效目标
+            Assert.True(vm.IsFolder);
+        }
+        finally
+        {
+            Directory.Delete(dir);
+        }
+    }
+
+    [Fact]
+    public void MissingPath_IsNeitherFileNorFolder()
+    {
+        var vm = Vm(path: @"C:\不存在的路径\xyz");
+        Assert.True(vm.PathMissing);
+        Assert.False(vm.IsFolder);
     }
 }
