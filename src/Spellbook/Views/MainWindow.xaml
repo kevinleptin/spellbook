@@ -5,8 +5,15 @@
         Title="Spellbook"
         Width="560" Height="640"
         MinWidth="360" MinHeight="300"
+        WindowStyle="None"
         Background="{StaticResource BackgroundBrush}"
         PreviewKeyDown="Window_PreviewKeyDown">
+    <!-- 自定义窗口 chrome:去掉系统白色标题栏,保留拖动/双击最大化/边缘缩放/贴靠 -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="36" ResizeBorderThickness="6"
+                      GlassFrameThickness="0" CornerRadius="0"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
 
         <!-- ======== 磁贴 = 技能按钮 ======== -->
@@ -191,7 +198,45 @@
 
     </Window.Resources>
 
+    <!-- 窗口外框;最大化时加边距抵消无边框窗口的屏幕溢出 -->
+    <Border>
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="{StaticResource GoldDarkBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                        <Setter Property="Margin" Value="7"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
     <DockPanel>
+
+        <!-- 标题栏(仿魔兽:深底、金字、法术书图标) -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource GoldDarkBrush}" BorderThickness="0,0,0,1">
+            <Grid Height="35">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0,0,0">
+                    <Image x:Name="TitleIcon" Width="18" Height="18" VerticalAlignment="Center"/>
+                    <TextBlock Text="Spellbook"
+                               Foreground="{StaticResource GoldBrush}"
+                               FontWeight="Bold" FontSize="13"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Style="{StaticResource CaptionButtonStyle}" Content="&#xE921;" Click="Minimize_Click"/>
+                    <Button x:Name="MaximizeButton" Style="{StaticResource CaptionButtonStyle}" Content="&#xE922;" Click="Maximize_Click"/>
+                    <Button Style="{StaticResource CaptionCloseButtonStyle}" Content="&#xE8BB;" Click="Close_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <!-- 顶部:搜索框 + 新建按钮 -->
         <Grid DockPanel.Dock="Top" Margin="10,10,10,4">
@@ -243,4 +288,5 @@
         </ScrollViewer>
 
     </DockPanel>
+    </Border>
 </Window>

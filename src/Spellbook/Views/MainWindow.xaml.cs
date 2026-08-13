@@ -1,6 +1,7 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Spellbook.Services;
 using Spellbook.ViewModels;
 
 namespace Spellbook.Views;
@@ -12,9 +13,28 @@ public partial class MainWindow : Window
     private Point _dragStart;
     private ItemViewModel? _dragCandidate;
 
-    public MainWindow() => InitializeComponent();
+    public MainWindow()
+    {
+        InitializeComponent();
+        TitleIcon.Source = SvgIconLoader.Get("book");
+        // 最大化/还原时切换按钮字形(Segoe MDL2:E922 最大化,E923 还原)
+        StateChanged += (_, _) =>
+            MaximizeButton.Content = WindowState == WindowState.Maximized ? "\uE923" : "\uE922";
+    }
 
     private MainViewModel Vm => (MainViewModel)DataContext;
+
+    // ---------- 标题栏窗口控制 ----------
+
+    private void Minimize_Click(object sender, RoutedEventArgs e) => SystemCommands.MinimizeWindow(this);
+
+    private void Maximize_Click(object sender, RoutedEventArgs e)
+    {
+        if (WindowState == WindowState.Maximized) SystemCommands.RestoreWindow(this);
+        else SystemCommands.MaximizeWindow(this);
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e) => SystemCommands.CloseWindow(this);
 
     // ---------- 快捷键 ----------
 

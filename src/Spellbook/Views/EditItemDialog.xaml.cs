@@ -31,4 +31,7 @@ public partial class EditItemDialog : Window
     }
 
     private void Ok_Click(object sender, RoutedEventArgs e) => DialogResult = true;
+
+    /// <summary>标题栏关闭按钮 = 取消。</summary>
+    private void TitleClose_Click(object sender, RoutedEventArgs e) => Close();
 }

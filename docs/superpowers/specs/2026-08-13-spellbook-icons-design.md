@@ -55,6 +55,14 @@ App.xaml 增加全局隐式样式(对所有 ContextMenu/MenuItem/Separator 生�
 
 磁贴模板中原内联书本 Path 替换为 `Image`,Source 绑定 `ItemViewModel.IconImage`(由 IconKey 经 SvgIconLoader 缓存解析;属性在 IconKey 变化/编辑后刷新)。⚠ 失效标记、三层金边、发光/按下效果不变。
 
+## 标题栏魔兽化(追加需求)
+
+系统默认白色标题栏替换为自定义 chrome(`WindowChrome`,保留拖动/双击最大化/边缘缩放/Win 贴靠):
+
+- 主窗口与对话框统一:36px(对话框 32px)标题栏,PanelBrush 深底、底部 1px 金暗线;左侧法术书小图标 + 金色加粗标题文字。
+- 窗口控制按钮(最小化/最大化/关闭)为方形深底按钮,金色字形,悬停 GoldDark 底;关闭按钮悬停红底。对话框仅关闭按钮。
+- 窗口外框 1px GoldDark;最大化时根容器加 7px 边距抵消无边框窗口溢出。
+
 ## 测试策略
 
 - 图标资产:100 个文件全部可解析、Key 唯一、与 IconLibrary 清单一一对应、几何数据 `Geometry.Parse` 不抛异常、颜色为合法十六进制。

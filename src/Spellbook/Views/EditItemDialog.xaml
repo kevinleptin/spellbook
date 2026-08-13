@@ -6,8 +6,15 @@
         Title="添加脚本"
         Width="460" SizeToContent="Height" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
         Background="{StaticResource BackgroundBrush}"
         ShowInTaskbar="False">
+    <!-- 自定义窗口 chrome:与主窗口一致的魔兽风标题栏 -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="32" ResizeBorderThickness="0"
+                      GlassFrameThickness="0" CornerRadius="0"
+                      UseAeroCaptionButtons="False"/>
+    </WindowChrome.WindowChrome>
     <Window.Resources>
         <views:IconKeyToImageConverter x:Key="IconKeyToImage"/>
         <!-- 表单标签统一样式 -->
@@ -91,6 +98,26 @@
             </Setter>
         </Style>
     </Window.Resources>
+
+    <Border BorderBrush="{StaticResource GoldDarkBrush}" BorderThickness="1">
+    <DockPanel>
+        <!-- 标题栏 -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource GoldDarkBrush}" BorderThickness="0,0,0,1">
+            <Grid Height="31">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0"
+                           Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+                           Foreground="{StaticResource GoldBrush}"
+                           FontWeight="Bold" FontSize="12"
+                           VerticalAlignment="Center" Margin="12,0,0,0"/>
+                <Button Grid.Column="1" Style="{StaticResource CaptionCloseButtonStyle}"
+                        Content="&#xE8BB;" Click="TitleClose_Click"/>
+            </Grid>
+        </Border>
 
     <Grid Margin="16">
         <Grid.ColumnDefinitions>
@@ -201,4 +228,6 @@
                     IsCancel="True" MinWidth="72" Margin="10,0,0,0"/>
         </StackPanel>
     </Grid>
+    </DockPanel>
+    </Border>
 </Window>
