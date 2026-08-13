@@ -16,7 +16,8 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        TitleIcon.Source = IconLoader.Get("book");
+        // 与应用图标(卷轴)保持一致
+        TitleIcon.Source = IconLoader.Get("scroll");
         // 最大化/还原时切换按钮字形(Segoe MDL2:E922 最大化,E923 还原)
         StateChanged += (_, _) =>
             MaximizeButton.Content = WindowState == WindowState.Maximized ? "\uE923" : "\uE922";
