@@ -11,6 +11,7 @@ public class EditItemViewModel : ViewModelBase
     private string _arguments = "";
     private string _notes = "";
     private string _groupName = "";
+    private string _iconKey = "book";
     // 上一次自动填入的名称:名称仍等于它(或为空)时,换文件会继续自动跟随
     private string _lastAutoName = "";
 
@@ -24,6 +25,8 @@ public class EditItemViewModel : ViewModelBase
             _arguments = editing.Arguments;
             _notes = editing.Notes;
             _groupName = editing.GroupName;
+            // 旧数据可能无图标 Key,回退默认 book
+            _iconKey = string.IsNullOrWhiteSpace(editing.IconKey) ? "book" : editing.IconKey;
         }
     }
 
@@ -47,6 +50,9 @@ public class EditItemViewModel : ViewModelBase
             if (SetProperty(ref _scriptPath, value)) OnPropertyChanged(nameof(CanConfirm));
         }
     }
+
+    /// <summary>选中的图标 Key(仿魔兽宏命令的图标网格中任选)。</summary>
+    public string IconKey { get => _iconKey; set => SetProperty(ref _iconKey, value); }
 
     public string Arguments { get => _arguments; set => SetProperty(ref _arguments, value); }
     public string Notes { get => _notes; set => SetProperty(ref _notes, value); }
@@ -75,5 +81,6 @@ public class EditItemViewModel : ViewModelBase
         Notes = Notes,
         GroupName = GroupName.Trim(),
         SortOrder = sortOrder,
+        IconKey = IconKey,
     };
 }

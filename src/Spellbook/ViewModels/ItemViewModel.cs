@@ -1,5 +1,7 @@
 using System.IO;
+using System.Windows.Media;
 using Spellbook.Models;
+using Spellbook.Services;
 
 namespace Spellbook.ViewModels;
 
@@ -22,6 +24,9 @@ public class ItemViewModel : ViewModelBase
     public string Arguments => Model.Arguments;
     public string Notes => Model.Notes;
     public string GroupName => Model.GroupName;
+
+    /// <summary>磁贴图标(空/未知 Key 回退默认法术书)。</summary>
+    public DrawingImage IconImage => SvgIconLoader.Get(Model.IconKey);
 
     /// <summary>磁贴标题:超过 4 个字符截断并加“…”。</summary>
     public string DisplayName =>
@@ -61,6 +66,7 @@ public class ItemViewModel : ViewModelBase
         OnPropertyChanged(nameof(DisplayName));
         OnPropertyChanged(nameof(TooltipPathLine));
         OnPropertyChanged(nameof(HasNotes));
+        OnPropertyChanged(nameof(IconImage));
         RefreshPathMissing();
     }
 }

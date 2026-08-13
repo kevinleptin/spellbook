@@ -34,6 +34,7 @@ public class ItemStoreTests : IDisposable
                 Notes = "第一行\n第二行",
                 GroupName = "运维",
                 SortOrder = 3,
+                IconKey = "fireball",
             },
         };
 
@@ -47,6 +48,19 @@ public class ItemStoreTests : IDisposable
         Assert.Equal("第一行\n第二行", item.Notes);
         Assert.Equal("运维", item.GroupName);
         Assert.Equal(3, item.SortOrder);
+        Assert.Equal("fireball", item.IconKey);
+    }
+
+    [Fact]
+    public void Load_LegacyJsonWithoutIconKey_DefaultsToEmpty()
+    {
+        Directory.CreateDirectory(_dir);
+        File.WriteAllText(_file,
+            """[{"Name":"a","ScriptPath":"C:\\a.ps1","Arguments":"","Notes":"","GroupName":"","SortOrder":0}]""");
+
+        var item = Assert.Single(new ItemStore(_file).Load());
+
+        Assert.Equal("", item.IconKey); // 旧数据无字段,自然回退
     }
 
     [Fact]

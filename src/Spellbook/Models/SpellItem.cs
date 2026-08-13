@@ -19,4 +19,7 @@ public class SpellItem
 
     /// <summary>组内排序序号。</summary>
     public int SortOrder { get; set; }
+
+    /// <summary>图标 Key(IconLibrary),空表示默认 book;旧数据无此字段。</summary>
+    public string IconKey { get; set; } = "";
 }

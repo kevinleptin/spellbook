@@ -53,6 +53,34 @@ public class EditItemViewModelTests
     }
 
     [Fact]
+    public void NewItem_DefaultsToBookIcon()
+        => Assert.Equal("book", new EditItemViewModel(Array.Empty<string>()).IconKey);
+
+    [Fact]
+    public void ToModel_CarriesIconKey()
+    {
+        var vm = new EditItemViewModel(Array.Empty<string>());
+        vm.SetScriptPath(@"C:\s\a.ps1");
+        vm.IconKey = "fireball";
+
+        Assert.Equal("fireball", vm.ToModel(0).IconKey);
+    }
+
+    [Fact]
+    public void Editing_PrefillsIconKey()
+    {
+        var item = new SpellItem { Name = "n", ScriptPath = @"C:\a.ps1", IconKey = "skull" };
+        Assert.Equal("skull", new EditItemViewModel(Array.Empty<string>(), item).IconKey);
+    }
+
+    [Fact]
+    public void Editing_EmptyIconKey_FallsBackToBook()
+    {
+        var item = new SpellItem { Name = "n", ScriptPath = @"C:\a.ps1" };
+        Assert.Equal("book", new EditItemViewModel(Array.Empty<string>(), item).IconKey);
+    }
+
+    [Fact]
     public void Editing_PrefillsAllFields()
     {
         var item = new SpellItem
