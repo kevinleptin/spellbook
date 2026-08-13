@@ -8,7 +8,7 @@ namespace Spellbook.Views;
 public class IconKeyToImageConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => SvgIconLoader.Get(value as string ?? "");
+        => IconLoader.Get(value as string ?? "");
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => throw new NotSupportedException();

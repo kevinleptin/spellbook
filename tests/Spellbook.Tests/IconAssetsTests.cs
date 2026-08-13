@@ -36,11 +36,11 @@ public class IconAssetsTests
         var dir = IconsDir();
         foreach (var icon in IconLibrary.All)
         {
-            Assert.True(File.Exists(Path.Combine(dir, icon.Key + ".svg")),
-                $"缺少图标文件: {icon.Key}.svg");
+            Assert.True(File.Exists(Path.Combine(dir, icon.Key + ".png")),
+                $"缺少图标文件: {icon.Key}.png");
         }
-        // 目录中也不应有清单之外的多余 svg
-        var files = Directory.GetFiles(dir, "*.svg").Select(Path.GetFileNameWithoutExtension);
+        // 目录中也不应有清单之外的多余图标文件
+        var files = Directory.GetFiles(dir, "*.png").Select(Path.GetFileNameWithoutExtension);
         Assert.Empty(files.Except(IconLibrary.All.Select(i => i.Key)));
     }
 

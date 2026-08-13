@@ -26,7 +26,7 @@ public class ItemViewModel : ViewModelBase
     public string GroupName => Model.GroupName;
 
     /// <summary>磁贴图标(空/未知 Key 回退默认法术书)。</summary>
-    public DrawingImage IconImage => SvgIconLoader.Get(Model.IconKey);
+    public ImageSource IconImage => IconLoader.Get(Model.IconKey);
 
     /// <summary>磁贴标题:超过 4 个字符截断并加“…”。</summary>
     public string DisplayName =>

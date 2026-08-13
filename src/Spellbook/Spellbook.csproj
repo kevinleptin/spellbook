@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Icons\*.svg" />
+    <Resource Include="Assets\Icons\*.png" />
   </ItemGroup>
 
 </Project>

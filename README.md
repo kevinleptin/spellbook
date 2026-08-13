@@ -5,7 +5,7 @@
 ## 功能
 
 - 手动添加脚本快捷方式:路径、参数、备注、分组
-- 100 个魔兽主题矢量图标(武器/魔法/技能,按系别配色),新建/编辑时仿"新建宏命令"从图标网格任选
+- 100 个手绘风魔兽主题图标(武器/魔法/技能),新建/编辑时仿"新建宏命令"从图标网格任选
 - 磁贴点击即在新控制台窗口运行(`powershell.exe -ExecutionPolicy Bypass -File …`),退出码异步回填状态栏
 - 分组展示,组内拖拽排序;右键磁贴可编辑 / 删除 / 移动分组
 - `Ctrl+K` 聚焦搜索框,按名称实时过滤
@@ -25,6 +25,11 @@ dotnet test
 ```
 
 ## 结构
+
+## 图标素材署名
+
+- 法术类图标:[Painterly Spell Icons](https://opengameart.org/content/painterly-spell-icons-part-1) — J. W. Bjerk (eleazzaar),[www.jwbjerk.com/art](http://www.jwbjerk.com/art),CC-BY 3.0
+- 武器与物品图标:[Fantasy Icon Pack](https://opengameart.org/content/fantasy-icon-pack-by-ravenmore-0) — Ravenmore ([dycha.net](http://dycha.net)),CC-BY 3.0
 
 ```
 src/Spellbook/          WPF 应用(手写 MVVM,无第三方框架)

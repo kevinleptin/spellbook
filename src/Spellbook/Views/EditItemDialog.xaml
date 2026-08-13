@@ -211,9 +211,13 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Image Width="24" Height="24"
+                    <Image Width="30" Height="30" Stretch="UniformToFill"
                            Source="{Binding Key, Converter={StaticResource IconKeyToImage}}"
-                           ToolTip="{Binding DisplayName}"/>
+                           ToolTip="{Binding DisplayName}">
+                        <Image.Clip>
+                            <RectangleGeometry Rect="0,0,30,30" RadiusX="3" RadiusY="3"/>
+                        </Image.Clip>
+                    </Image>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
