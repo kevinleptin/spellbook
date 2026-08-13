@@ -1,0 +1,20 @@
+# Unity 生成目录,全部可由工程重建
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]serSettings/
+/[Mm]emoryCaptures/
+
+# IDE 生成
+*.csproj
+*.sln
+*.suo
+*.user
+.vs/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db
