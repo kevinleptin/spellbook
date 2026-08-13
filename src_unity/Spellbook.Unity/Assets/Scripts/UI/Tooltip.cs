@@ -38,8 +38,9 @@ namespace Spellbook.UI
             UIFactory.Fill(panel.rectTransform);
             panel.raycastTarget = false;
 
+            // 条目名多为中文,用正文字体保证渲染
             _name = UIFactory.Text("Name", rt, "", Theme.FontBody, Theme.GoldBright,
-                Theme.TitleFont, TextAlignmentOptions.TopLeft);
+                null, TextAlignmentOptions.TopLeft);
             var nameRt = _name.rectTransform;
             nameRt.anchorMin = new Vector2(0f, 1f);
             nameRt.anchorMax = new Vector2(1f, 1f);

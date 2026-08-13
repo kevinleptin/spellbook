@@ -9,6 +9,12 @@
 | 轻量版 | `src/` | WPF / .NET 8 | 秒开、低占用的日常工具 |
 | 游戏版 Spellbook Arcane | `src_unity/` | Unity 6 | 开场动画、翻页过场、粒子施法、全程音效的游戏级体验 |
 
+游戏版实际画面:
+
+| 开场:法术书封面 | 主界面:摊开的法术书 |
+|---|---|
+| ![开场](docs/screenshots/unity-intro.png) | ![主界面](docs/screenshots/unity-book.png) |
+
 ## 功能
 
 - 手动添加脚本快捷方式:路径、参数、备注、分组

@@ -50,7 +50,8 @@ namespace Spellbook.UI
             text.color = color;
             text.alignment = align;
             text.textWrappingMode = TextWrappingModes.NoWrap;
-            text.overflowMode = TextOverflowModes.Ellipsis;
+            // Noto Serif 行高较高,Ellipsis 会因垂直溢出把整行吞成省略号,用 Overflow
+            text.overflowMode = TextOverflowModes.Overflow;
             return text;
         }
 

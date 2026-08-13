@@ -63,8 +63,9 @@ namespace Spellbook.UI
             titleRt.sizeDelta = new Vector2(320f, 48f);
             titleRt.anchoredPosition = new Vector2(46f, -26f);
 
+            // 分组名多为中文,Cinzel 动态字体的 CJK 回退不可靠,直接用正文字体
             _groupTitle = UIFactory.Text("GroupTitle", _bookPanel, "", Theme.FontGroupTitle,
-                Theme.Ink, Theme.TitleFont, TextAlignmentOptions.Left);
+                Theme.Ink, null, TextAlignmentOptions.Left);
             var gtRt = _groupTitle.rectTransform;
             gtRt.anchorMin = new Vector2(0f, 1f);
             gtRt.anchorMax = new Vector2(1f, 1f);

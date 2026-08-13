@@ -1,4 +1,4 @@
-# Spellbook Unity 版:一键测试 + 构建(需已激活 Unity 许可证,Hub 里登录一次即可)
+﻿# Spellbook Unity 版:一键测试 + 构建(需已激活 Unity 许可证,Hub 里登录一次即可)
 # 用法: powershell -File src_unity\verify-and-build.ps1 [-UnityExe <路径>]
 param(
     [string]$UnityExe = "C:\Unity\6000.0.81f1\Editor\Unity.exe"

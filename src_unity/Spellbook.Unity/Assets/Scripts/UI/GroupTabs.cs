@@ -26,7 +26,8 @@ namespace Spellbook.UI
             rt.anchorMax = new Vector2(1f, 1f);
             rt.pivot = new Vector2(0f, 0.5f);
             rt.sizeDelta = new Vector2(150f, -120f);
-            rt.anchoredPosition = new Vector2(-8f, 0f);
+            // 书签主体在书页内,选中时向左抽出;-130 让右缘只探出 20px 不出屏
+            rt.anchoredPosition = new Vector2(-130f, 0f);
             return rt.gameObject.AddComponent<GroupTabs>();
         }
 

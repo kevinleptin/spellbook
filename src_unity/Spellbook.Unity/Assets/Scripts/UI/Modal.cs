@@ -71,8 +71,8 @@ namespace Spellbook.UI
         {
             var panel = Modal.Open(canvasRoot, new Vector2(460f, 240f), out var close);
 
-            var titleText = UIFactory.Text("Title", panel, title, Theme.FontGroupTitle, Theme.Ink,
-                Theme.TitleFont);
+            // 标题为中文,用正文字体
+            var titleText = UIFactory.Text("Title", panel, title, Theme.FontGroupTitle, Theme.Ink);
             var titleRt = titleText.rectTransform;
             titleRt.anchorMin = new Vector2(0f, 1f);
             titleRt.anchorMax = new Vector2(1f, 1f);

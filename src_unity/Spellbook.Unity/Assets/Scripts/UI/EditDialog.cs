@@ -23,7 +23,7 @@ namespace Spellbook.UI
             var panel = Modal.Open(canvasRoot, new Vector2(640f, 620f), out var close);
 
             var title = UIFactory.Text("Title", panel, isNew ? "缮写新法术" : "修订法术",
-                Theme.FontGroupTitle, Theme.Ink, Theme.TitleFont);
+                Theme.FontGroupTitle, Theme.Ink);
             var titleRt = title.rectTransform;
             titleRt.anchorMin = new Vector2(0f, 1f);
             titleRt.anchorMax = new Vector2(1f, 1f);

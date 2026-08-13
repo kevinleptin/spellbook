@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Spellbook.Core;
 using Spellbook.FX;
 using Spellbook.UI;
@@ -43,7 +45,7 @@ namespace Spellbook
 
             var eventSystem = new GameObject("EventSystem", typeof(EventSystem),
                 typeof(StandaloneInputModule));
-            Object.DontDestroyOnLoad(eventSystem);
+            UnityEngine.Object.DontDestroyOnLoad(eventSystem);
 
             // ―― 氛围:背景余烬 + 环境音乐 ――
             var worldHeight = cam.orthographicSize * 2f;
@@ -65,6 +67,37 @@ namespace Spellbook
                 canvas.transform.Find("Toast").SetAsLastSibling();
                 canvas.transform.Find("Tooltip").SetAsLastSibling();
             });
+
+            // 自动化截图:--shots <目录>,从后备缓冲区导出(锁屏时窗口抓屏无效也能出图)
+            var args = Environment.GetCommandLineArgs();
+            var idx = Array.IndexOf(args, "--shots");
+            if (idx >= 0 && idx + 1 < args.Length)
+            {
+                var runner = new GameObject("[Shots]").AddComponent<ShotRunner>();
+                runner.OutDir = args[idx + 1];
+            }
+        }
+
+        /// <summary>定时连拍:覆盖开场到主界面的关键时刻,拍完退出。</summary>
+        private class ShotRunner : MonoBehaviour
+        {
+            private static readonly float[] Times = { 0.6f, 1.2f, 2.0f, 2.8f, 4f, 7f };
+            public string OutDir;
+            private float _t;
+            private int _next;
+
+            private void Update()
+            {
+                _t += Time.unscaledDeltaTime;
+                if (_next < Times.Length && _t >= Times[_next])
+                {
+                    Directory.CreateDirectory(OutDir);
+                    ScreenCapture.CaptureScreenshot(
+                        Path.Combine(OutDir, $"shot-{Times[_next]:0.0}s.png"));
+                    _next++;
+                }
+                if (_t >= 9f) Application.Quit();
+            }
         }
     }
 }

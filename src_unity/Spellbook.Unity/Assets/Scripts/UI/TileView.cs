@@ -72,7 +72,8 @@ namespace Spellbook.UI
             var warn = UIFactory.Text("Warn", _missingOverlay.transform, "⚠", 34, new Color(1f, 0.75f, 0.2f));
             UIFactory.Fill(warn.rectTransform);
 
-            _label = UIFactory.Text("Name", transform, item.Name, Theme.FontTile, Theme.Parchment);
+            // 墨色文字:磁贴落在羊皮纸页面上,浅色会隐形
+            _label = UIFactory.Text("Name", transform, item.Name, Theme.FontTile, Theme.Ink);
             var labelRt = _label.rectTransform;
             labelRt.anchorMin = new Vector2(0f, 0f);
             labelRt.anchorMax = new Vector2(1f, 0f);

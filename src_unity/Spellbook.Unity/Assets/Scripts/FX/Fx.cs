@@ -40,11 +40,12 @@ namespace Spellbook.FX
             shape.shapeType = ParticleSystemShapeType.Box;
             shape.scale = new Vector3(worldSize.x, worldSize.y, 0.1f);
 
-            // 上升 + 轻微横向游移
+            // 上升 + 轻微横向游移(x/y/z 必须同为双常量模式,否则每帧告警)
             var vel = ps.velocityOverLifetime;
             vel.enabled = true;
-            vel.y = new ParticleSystem.MinMaxCurve(0.2f, 0.6f);
             vel.x = new ParticleSystem.MinMaxCurve(-0.15f, 0.15f);
+            vel.y = new ParticleSystem.MinMaxCurve(0.2f, 0.6f);
+            vel.z = new ParticleSystem.MinMaxCurve(0f, 0f);
 
             // 尾段淡出
             var col = ps.colorOverLifetime;
